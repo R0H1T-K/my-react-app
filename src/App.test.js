@@ -7,7 +7,9 @@ test('renders learn react link', () => {
   expect(linkElement).toBeInTheDocument();
 });
 
+
 test('renders without crashing', () => {
   const div = document.createElement('div');
+  console.log('div', div);
   render(<App />, div);
 });
