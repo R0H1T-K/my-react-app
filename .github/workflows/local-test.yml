@@ -1,0 +1,40 @@
+name: React App Testing
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test -- --watchAll=false
+
+      - name: Build application
+        run: npm run build
+
+      - name: Check build size
+        run: du -sh build/
+
+      - name: Test build
+        run: |
+          npm install -g serve
+          serve -s build &
+          sleep 5
+          curl http://localhost:3000 
